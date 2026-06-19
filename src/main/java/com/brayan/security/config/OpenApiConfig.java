@@ -15,8 +15,15 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(
                 title = "Secure User Management API",
                 version = "1.0.0",
-                description = "API REST segura para gestión de usuarios, roles y autenticación con JWT.",
-                contact = @Contact(name = "Brayan Jair Chavez Oscor")
+                description = "API REST segura de nivel empresarial para gestión avanzada de usuarios, control de roles (RBAC) y autenticación con JWT.",
+                contact = @Contact(
+                        name = "Brayan Jair Chavez Oscor",
+                        url = "https://github.com/Brayan1262"
+                ),
+                license = @License(
+                        name = "MIT License",
+                        url = "https://opensource.org/licenses/MIT"
+                )
         ),
         security = @SecurityRequirement(name = "bearerAuth")
 )
