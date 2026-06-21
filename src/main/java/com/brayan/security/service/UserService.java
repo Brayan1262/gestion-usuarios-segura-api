@@ -6,20 +6,19 @@ import com.brayan.security.entity.User;
 import com.brayan.security.exception.BadRequestException;
 import com.brayan.security.exception.ResourceNotFoundException;
 import com.brayan.security.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public List<UserResponse> findAll() {
         return userRepository.findAll().stream()
@@ -39,6 +38,7 @@ public class UserService {
         return mapToResponse(user);
     }
 
+    @Transactional
     public UserResponse update(Long id, UpdateUserRequest request) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
@@ -57,6 +57,7 @@ public class UserService {
         return mapToResponse(updated);
     }
 
+    @Transactional
     public UserResponse disable(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
@@ -64,6 +65,7 @@ public class UserService {
         return mapToResponse(userRepository.save(user));
     }
 
+    @Transactional
     public UserResponse enable(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
