@@ -199,6 +199,77 @@
             100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
 
+        /* Code Snippet Styles */
+        .code-snippet {
+            margin-top: 3.5rem;
+            background-color: #0F172A;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            text-align: left;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background-color: #1E293B;
+            border-bottom: 1px solid #334155;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red { background-color: #EF4444; }
+        .dot.yellow { background-color: #F59E0B; }
+        .dot.green { background-color: #10B981; }
+
+        .copy-btn {
+            background: transparent;
+            border: none;
+            color: #94A3B8;
+            cursor: pointer;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: color 0.2s;
+        }
+
+        .copy-btn:hover { color: #F8FAFC; }
+
+        .code-body {
+            padding: 1.25rem;
+            overflow-x: auto;
+        }
+
+        .code-body pre {
+            margin: 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.875rem;
+            color: #38BDF8;
+            line-height: 1.5;
+        }
+        
+        .code-comment {
+            color: #64748B;
+        }
+
         /* Animated Background Shapes */
         .bg-shapes {
             position: fixed;
@@ -278,6 +349,29 @@
                     Ver en GitHub
                 </a>
             </div>
+
+            <div class="code-snippet">
+                <div class="code-header">
+                    <div class="code-dots">
+                        <div class="dot red"></div>
+                        <div class="dot yellow"></div>
+                        <div class="dot green"></div>
+                    </div>
+                    <button class="copy-btn" id="copy-btn" onclick="copyCode()">
+                        <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        Copiar
+                    </button>
+                </div>
+                <div class="code-body">
+                    <pre><span class="code-comment"># Autenticación rápida vía terminal</span>
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@example.com",
+    "password": "Password123"
+  }'</pre>
+                </div>
+            </div>
         </div>
 
         <div class="features">
@@ -304,6 +398,21 @@
     </footer>
 
     <script>
+        function copyCode() {
+            const code = `curl -X POST http://localhost:8080/api/auth/login \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "email": "admin@example.com",
+    "password": "Password123"
+  }'`;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.getElementById('copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<svg style="width:16px;height:16px;color:#10B981;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> ¡Copiado!';
+                setTimeout(() => { btn.innerHTML = originalText; }, 2000);
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const badge = document.getElementById('api-status-badge');
             const text = document.getElementById('api-status-text');
