@@ -7,10 +7,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,15 +29,15 @@ public class UserController {
     }
 
     @GetMapping
-    @Operation(summary = "Listar usuarios", description = "Devuelve todos los usuarios registrados.")
-    public ResponseEntity<List<UserResponse>> findAll() {
-        return ResponseEntity.ok(userService.findAll());
+    @Operation(summary = "Listar usuarios", description = "Devuelve todos los usuarios registrados con paginación.")
+    public ResponseEntity<Page<UserResponse>> findAll(@PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(userService.findAll(pageable));
     }
 
     @GetMapping("/active")
-    @Operation(summary = "Listar usuarios activos", description = "Devuelve los usuarios que están habilitados.")
-    public ResponseEntity<List<UserResponse>> findEnabledUsers() {
-        return ResponseEntity.ok(userService.findEnabledUsers());
+    @Operation(summary = "Listar usuarios activos", description = "Devuelve los usuarios que están habilitados con paginación.")
+    public ResponseEntity<Page<UserResponse>> findEnabledUsers(@PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(userService.findEnabledUsers(pageable));
     }
 
     @GetMapping("/{id}")

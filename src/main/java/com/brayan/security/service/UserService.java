@@ -10,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,16 +21,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public List<UserResponse> findAll() {
-        return userRepository.findAll().stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+    public Page<UserResponse> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable)
+                .map(this::mapToResponse);
     }
 
-    public List<UserResponse> findEnabledUsers() {
-        return userRepository.findByEnabledTrue().stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+    public Page<UserResponse> findEnabledUsers(Pageable pageable) {
+        return userRepository.findByEnabledTrue(pageable)
+                .map(this::mapToResponse);
     }
 
     public UserResponse findById(Long id) {
