@@ -37,6 +37,8 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
 
         .hero h1 {
@@ -162,9 +164,67 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
+        /* Animated Background Shapes */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            overflow: hidden;
+            background-color: var(--bg-color);
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: #4F46E5;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 500px;
+            height: 500px;
+            background: #A78BFA;
+            bottom: -150px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+        
+        .shape-3 {
+            width: 300px;
+            height: 300px;
+            background: #3B82F6;
+            top: 40%;
+            left: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
     </style>
 </head>
 <body>
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
     <div class="container">
         <div class="hero">
             <h1>Secure User Management API</h1>
