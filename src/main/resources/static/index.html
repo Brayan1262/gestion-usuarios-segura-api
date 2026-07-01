@@ -111,12 +111,15 @@
         }
 
         .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
+            background-color: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 1rem;
             padding: 1.5rem;
             text-align: left;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
         .card:hover {
@@ -163,6 +166,37 @@
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+
+        .api-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #10B981;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.8s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10B981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10B981;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
 
         /* Animated Background Shapes */
@@ -227,6 +261,10 @@
     </div>
     <div class="container">
         <div class="hero">
+            <div class="api-status" id="api-status-badge">
+                <div class="status-dot" id="api-status-dot"></div>
+                <span id="api-status-text">Checking Systems...</span>
+            </div>
             <h1>Secure User Management API</h1>
             <p>API REST segura de nivel empresarial diseñada para la gestión avanzada de usuarios, control de acceso basado en roles (RBAC) y protección con JWT.</p>
             
@@ -264,5 +302,32 @@
     <footer>
         <p>Desarrollado por Brayan Jair Chavez Oscor &bull; Spring Boot 3 & Java 21</p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const badge = document.getElementById('api-status-badge');
+            const text = document.getElementById('api-status-text');
+            const dot = document.getElementById('api-status-dot');
+
+            fetch('/api/users/me')
+                .then(response => {
+                    // 401 or 403 means the API is running and securing endpoints
+                    if (response.ok || response.status === 401 || response.status === 403) {
+                        text.textContent = 'API Systems Operational';
+                    } else {
+                        throw new Error('API Error');
+                    }
+                })
+                .catch(() => {
+                    text.textContent = 'API Offline';
+                    badge.style.color = '#EF4444';
+                    badge.style.background = 'rgba(239, 68, 68, 0.1)';
+                    badge.style.borderColor = 'rgba(239, 68, 68, 0.2)';
+                    dot.style.backgroundColor = '#EF4444';
+                    dot.style.boxShadow = '0 0 8px #EF4444';
+                    dot.style.animation = 'none';
+                });
+        });
+    </script>
 </body>
 </html>
